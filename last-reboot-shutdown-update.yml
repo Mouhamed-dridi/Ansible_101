@@ -1,0 +1,30 @@
+                             
+- name: Get last reboot/shutdown time
+  hosts: all
+  become: true
+  tasks:
+    - name: Get last shutdown time
+      shell: last -x shutdown | head -1
+      register: last_shutdown
+
+    - name: Get last reboot time
+      shell: last -x reboot | head -1
+      register: last_reboot
+    
+    - name : Get last update 
+      shell : ls -lt /var/log/apt/history.log | head -2 | tail -1 | awk '{print $6, $7, $8}'
+      register : last_upadte 
+
+    - name: Display last shutdown time
+      debug:
+        var: last_shutdown.stdout
+
+    - name: Display last reboot time
+      debug:
+        var: last_reboot.stdout
+    
+    - name : Dispaly last update 
+      debug:
+        var: last_reboot.stdout
+
+    
