@@ -24,17 +24,40 @@ if you have a host that has both Python 2 and Python 3 installed, and your playb
 
 ## Playbook
 A playbook is a YAML file that contains a set of instructions for Ansible to execute. To create a playbook, follow these steps:
-Create a new file called playbook.yml in the root directory of your Ansible project.
+Create a new file called playbook.yml in  of your Ansible project.
+this playbook is give us the last time of server rebooting or shutdown 
 Add the following YAML code to the file:
 ```
-- name: Example playbook
-  hosts: webservers
+                             
+- name: Get last reboot/shutdown time
+  hosts: all
   become: true
   tasks:
-    - name: Install Apache web server
-      apt:
-        name: apache2
-        state: present
+    - name: Get last shutdown time
+      shell: last -x shutdown | head -1
+      register: last_shutdown
+
+    - name: Get last reboot time
+      shell: last -x reboot | head -1
+      register: last_reboot
+    
+    - name : Get last update 
+      shell : ls -lt /var/log/apt/history.log | head -2 | tail -1 | awk '{print $6, $7, $8}'
+      register : last_upadte 
+
+    - name: Display last shutdown time
+      debug:
+        var: last_shutdown.stdout
+
+    - name: Display last reboot time
+      debug:
+        var: last_reboot.stdout
+    
+    - name : Dispaly last update 
+      debug:
+        var: last_reboot.stdout
+
+    
 
 ```
 This example creates a playbook that installs the Apache web server on the webservers group.
