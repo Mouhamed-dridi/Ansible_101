@@ -11,18 +11,16 @@ pip install ansible
 
 ## Inventory File
 An inventory file is a file that contains a list of servers that Ansible will manage. To create an inventory file, follow these steps:
-Create a new file called inventory in the root directory of your Ansible project.
-Add the IP addresses or hostnames of your servers to the file, like this:
+Create a new file called inventory in  directory of your Ansible project.
+Add the IP addresses or hostnames with username and paswsord  of your servers to the file, like this:
 This example creates two groups, webservers and dbservers, with three servers in total.
 ```
-[webservers]
-192.0.2.1
-192.0.2.2
-
-[dbservers]
-192.0.2.3
+[server]
+192.168.182.134  ansible_user=admin1 ansible_password=*** ansible_python_interpreter=/usr/bin/python3
 ```
 
+### Note : 
+if you have a host that has both Python 2 and Python 3 installed, and your playbook requires Python 3, you would set  "ansible_python_interpreter"   to the path of the Python 3 interpreter on that host. 
 
 ## Playbook
 A playbook is a YAML file that contains a set of instructions for Ansible to execute. To create a playbook, follow these steps:
